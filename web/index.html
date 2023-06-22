@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Text Input Example</title>
+</head>
+
+<body>
+  <form>
+    <label for="myInput">Enter text:</label>
+    <input type="text" id="myInput" name="myInput">
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="responseContainer"></div>
+
+  <script>
+    // Add an event listener to the form submission
+    document.querySelector('form').addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+
+      // Get the input value
+      var inputValue = document.getElementById('myInput').value;
+      console.log(inputValue, 'hello')
+      // Create a data object with the input value
+      var data = {
+        data: inputValue
+      };
+
+      // Make a POST request to the API route
+      fetch('https://pvkdq2pg61.execute-api.us-east-2.amazonaws.com/testing/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain',
+        }, mode: "no-cors",
+        body: JSON.stringify(data)
+      })
+        .then(function (response) {
+          if (response.ok) {
+            console.log(response)
+            return response.json(); // Convert the response to JSON
+          } else {
+            console.log(response);
+          }
+        })
+        .then(function (data) {
+          // Display the response on the HTML document
+          console.log(data)
+          var responseContainer = document.getElementById('responseContainer');
+          responseContainer.textContent = JSON.stringify(data);
+          console.log(data)
+        })
+        .catch(function (error) {
+          console.error('Error:', error);
+        });
+    });
+  </script>
+</body>
+
+</html>
